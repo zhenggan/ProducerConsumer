@@ -9,20 +9,20 @@ void *produce(void *arg)
 
     for (int i = 0; i < numItems; i++)
     {
-        pthread_mutex_lock(&mutex);
-
-        //Sleep to simulate work
-        usleep(300000);
-
         //Decrement semaphore to limit size of buffer
         sem_wait(&LimitQueueSize);
+
+        pthread_mutex_lock(&mutex);
+ 
+        //Sleep to simulate work
+        usleep(300000);
+        
         std::cout << "Pushing from " << pthread_self() << " Queue Size: " << queue.size() << std::endl;
-        queue.push(300);
+        queue.push(300000);
+        pthread_mutex_unlock(&mutex);
 
         //Increment the queue size
         sem_post(&currQueueSize);
-
-        pthread_mutex_unlock(&mutex);
         
     }
 }

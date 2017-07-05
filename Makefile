@@ -1,3 +1,3 @@
-prodconsume: main.cpp producer.h
-	g++ main.cpp producer.cpp -pthread -o prodconsume
+prodconsume: main.cpp consumer.h consumer.cpp producer.h producer.cpp
+	g++ main.cpp producer.cpp consumer.cpp -pthread -o prodconsume
 

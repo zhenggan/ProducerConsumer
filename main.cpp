@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include "producer.h"
+#include "consumer.h"
 
 //Semaphore to keep track of current queue size
 sem_t currQueueSize;
@@ -48,10 +49,27 @@ int main(int argc, char *argv[])
         }   
     }
 
+    for (int i = 0; i < numCon; i++)
+    {
+        int checkThreadCreation;
+        checkThreadCreation = pthread_create(&consumerThreads[i], NULL, &consume, NULL);
+        if (checkThreadCreation)
+        {
+            std::cout<< "Failed to allocate thread 1" << std::endl;
+            exit(EXIT_FAILURE);
+        }   
+    }
+
     
     for (int i = 0; i < numProd; i++)
     {
         pthread_join(producerThreads[i], NULL);
+    }
+
+    std::cout << "All producers finished" << std::endl;
+    for (int i = 0; i < numCon; i++)
+    {
+        pthread_join(consumerThreads[i], NULL);
     }
    
     //Test to make sure size of queue is correct    
